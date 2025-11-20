@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to llymemg00 Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        body {
+            min-height: 100vh;
+            color: #fff;
+            background: #0a0a0a;
+            font-family: 'Montserrat', Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        #particles-js {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+        }
+        .main-content {
+            position: relative;
+            z-index: 2;
+            padding: 50px 0 40px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 5vh 0 10px 0;
+        }
+        h3 {
+            font-weight: 400;
+            font-size: 1.2rem;
+            color: #bdbdbd;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .linkrow {
+            display: flex;
+            gap: 2vw;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        .card {
+            background: rgba(30,30,30,0.97);
+            border-radius: 21px;
+            box-shadow: 0 2px 14px rgba(20,21,38,0.18);
+            padding: 28px 32px 22px 32px;
+            min-width: 270px; 
+            min-height: 165px;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: none;
+            outline: none;
+        }
+        @keyframes floatCard1 {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(3px, -4px) rotate(0.5deg);
+            }
+            50% {
+                transform: translate(-2px, 3px) rotate(-0.3deg);
+            }
+            75% {
+                transform: translate(-3px, -2px) rotate(0.4deg);
+            }
+        }
+        @keyframes floatCard2 {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(-3px, 3px) rotate(-0.5deg);
+            }
+            50% {
+                transform: translate(2px, -3px) rotate(0.3deg);
+            }
+            75% {
+                transform: translate(3px, 2px) rotate(-0.4deg);
+            }
+        }
+        .links-card {
+            background: rgba(30,30,30,0.5) !important;
+            backdrop-filter: blur(10px);
+            transition: background 0.15s linear, box-shadow 0.15s linear, transform 0.7s cubic-bezier(.22,.68,.48,1.02);
+            cursor: pointer;
+            animation: floatCard1 8s ease-in-out infinite;
+            box-shadow: 0 2px 14px rgba(20,21,38,0.10);
+        }
+        .links-card:hover {
+            background: rgba(30,30,30,0.65) !important;
+            transform: scale(1.03) !important;
+            box-shadow: 0 2px 10px rgba(20,21,38,0.12);
+        }
+        .profile-card {
+            background: rgba(30,30,30,0.5) !important;
+            backdrop-filter: blur(10px);
+            transition: background 0.15s linear, box-shadow 0.15s linear, transform 0.7s cubic-bezier(.22,.68,.48,1.02);
+            cursor: pointer;
+            animation: floatCard2 10s ease-in-out infinite;
+            box-shadow: 0 2px 14px rgba(20,21,38,0.10);
+        }
+        .profile-card:hover {
+            background: rgba(30,30,30,0.65) !important;
+            transform: scale(1.03) !important;
+            box-shadow: 0 2px 10px rgba(20,21,38,0.12);
+        }
+        .card2 {
+            flex-direction: row;
+            min-width: 350px;
+            min-height: 120px;
+            align-items: start;
+        }
+        .profile-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 18%;
+            margin-bottom: 13px;
+            object-fit: cover;
+            background: #181818;
+        }
+        .profile-info {
+            text-align: center;
+            border: none;
+            outline: none;
+        }
+        .profile-name {
+            font-size: 1.24rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        .profile-bio {
+            font-size: .97rem;
+            color: #aaa;
+            margin-bottom: 7px;
+        }
+        .green-btn {
+            display: inline-block;
+            background: #15e278;
+            color: #191919;
+            font-weight: bold;
+            border: none;
+            font-size: 1.01rem;
+            border-radius: 9px;
+            padding: 8px 22px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 7px rgba(21, 226, 120, 0.11);
+            cursor: pointer;
+            outline: none;
+            margin-top: 5px;
+            text-decoration: none;
+            position: relative;
+        }
+        .green-btn:hover {
+            background: #11b05b;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(21, 226, 120, 0.3), 0 0 20px rgba(21, 226, 120, 0.2);
+            transform: translateY(-2px);
+        }
+        .green-btn:active {
+            transform: translateY(0);
+        }
+        .link-list {
+            margin: 7px 0 0 0; text-align: left; display:flex; flex-direction:column; gap:11px;
+        }
+        .link-list-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            font-size: 1.08rem;
+            color: #eee;
+            transition: background 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 5px 8px;
+            border-radius: 8px;
+            transform: translateX(0);
+        }
+        .link-list-item svg {
+            width: 20px;
+            height: 20px;
+            transition: filter 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1);
+            transform-origin: center;
+        }
+        .link-list-item a {
+            transition: text-shadow 0.4s ease;
+        }
+        .link-list-item:hover {
+            transform: translateX(3px);
+        }
+        .link-list-item:hover svg {
+            transform: scale(1.05);
+        }
+        .link-list-item:nth-child(1):hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .link-list-item:nth-child(1):hover svg {
+            filter: drop-shadow(0 0 10px #fff);
+        }
+        .link-list-item:nth-child(1):hover a {
+            text-shadow: 0 0 10px #fff;
+        }
+        .link-list-item:nth-child(2):hover {
+            background: rgba(88, 101, 242, 0.15);
+        }
+        .link-list-item:nth-child(2):hover svg {
+            filter: drop-shadow(0 0 10px #5865F2);
+        }
+        .link-list-item:nth-child(2):hover a {
+            text-shadow: 0 0 10px #5865F2;
+        }
+        .link-list-item:nth-child(3):hover {
+            background: rgba(0, 136, 204, 0.15);
+        }
+        .link-list-item:nth-child(3):hover svg {
+            filter: drop-shadow(0 0 10px #0088cc);
+        }
+        .link-list-item:nth-child(3):hover a {
+            text-shadow: 0 0 10px #0088cc;
+        }
+        .link-list-item:nth-child(4):hover {
+            background: rgba(29, 185, 84, 0.15);
+        }
+        .link-list-item:nth-child(4):hover svg {
+            filter: drop-shadow(0 0 10px #1DB954);
+        }
+        .link-list-item:nth-child(4):hover a {
+            text-shadow: 0 0 10px #1DB954;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            margin: 50px 0 24px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+        .project-list {
+            margin-top: 0;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 650px;
+        }
+        .project-card {
+            display: flex;
+            background: rgba(35,35,35,0.98);
+            border-radius: 17px;
+            box-shadow: 0 2px 7px rgba(100, 255, 170, 0.08);
+            margin-bottom: 24px;
+            align-items: center;
+            padding: 20px 18px;
+            gap: 18px;
+        }
+        .project-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        .project-content {
+            flex: 1;
+        }
+        .project-title {
+            font-weight: 600;
+            font-size: 1.18rem;
+            margin-bottom: 5px;
+        }
+        .project-desc {
+            color: #c2ffc7;
+            font-size: .97rem;
+            margin-bottom: 10px;
+        }
+        .project-btn {
+            background: #18dd7d;
+            color: #131313;
+            border-radius: 8px;
+            padding: 6px 16px;
+            font-size: .98rem;
+            font-weight: 600;
+            outline: none; border:none; cursor:pointer;
+        }
+        .project-btn:hover {
+            background: #109154;
+            color: #fff;
+        }
+        .project-icons {
+            margin-top: 6px;
+            font-size: .95rem;
+            color: #b5eec4;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+        @media (max-width: 768px) {
+            html, body {
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            h1 { 
+                font-size: 2.4rem; 
+                margin: 3vh 0 10px 0;
+                letter-spacing: 1px;
+            }
+            h3 {
+                font-size: 1.15rem;
+                margin-bottom: 28px;
+                padding: 0;
+            }
+            .main-content { 
+                padding: 35px 12px 35px 12px;
+                min-height: auto;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .linkrow {
+                flex-direction: column;
+                gap: 14px;
+                width: 100%;
+                max-width: 100%;
+            }
+            .card {
+                min-width: auto;
+                width: 100%;
+                max-width: 100%;
+                padding: 20px 18px 18px 18px;
+                margin: 0;
+            }
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-avatar {
+                width: 75px;
+                height: 75px;
+                margin-bottom: 10px;
+            }
+            .profile-name {
+                font-size: 1.15rem;
+            }
+            .profile-bio {
+                font-size: 0.9rem;
+            }
+            .green-btn {
+                font-size: 0.95rem;
+                padding: 7px 18px;
+            }
+            .links-card > div:first-child {
+                font-size: 1.15rem !important;
+                margin-bottom: 10px !important;
+            }
+            .link-list {
+                width: 100%;
+            }
+            .link-list-item {
+                font-size: 1rem;
+                padding: 6px 8px;
+            }
+            .link-list-item svg {
+                width: 18px;
+                height: 18px;
+            }
+            .section-title { 
+                font-size: 1.8rem; 
+                margin: 35px 0 24px 0;
+            }
+            .project-card { 
+                flex-direction: column; 
+                align-items: flex-start;
+                padding: 18px;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 { 
+                font-size: 2rem; 
+                margin: 2.5vh 0 8px 0;
+            }
+            h3 {
+                font-size: 1.05rem;
+                margin-bottom: 24px;
+                padding: 0;
+            }
+            .main-content { 
+                padding: 30px 10px 30px 10px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .linkrow {
+                gap: 12px;
+            }
+            .card {
+                padding: 18px 16px 16px 16px;
+                border-radius: 16px;
+            }
+            .profile-avatar {
+                width: 70px;
+                height: 70px;
+            }
+            .profile-name {
+                font-size: 1.1rem;
+            }
+            .profile-bio {
+                font-size: 0.85rem;
+            }
+            .green-btn {
+                font-size: 0.9rem;
+                padding: 6px 16px;
+            }
+            .links-card > div:first-child {
+                font-size: 1.1rem !important;
+            }
+            .link-list-item {
+                font-size: 0.95rem;
+                gap: 10px;
+            }
+            .link-list-item svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        @media (max-width: 360px) {
+            h1 { 
+                font-size: 1.8rem; 
+            }
+            h3 {
+                font-size: 1rem;
+            }
+            .main-content {
+                padding: 25px 8px 25px 8px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .linkrow {
+                gap: 10px;
+            }
+            .card {
+                padding: 16px 14px 14px 14px;
+            }
+            .profile-avatar {
+                width: 65px;
+                height: 65px;
+            }
+            .profile-name {
+                font-size: 1rem;
+            }
+            .profile-bio {
+                font-size: 0.8rem;
+            }
+            .green-btn {
+                font-size: 0.85rem;
+                padding: 5px 14px;
+            }
+            .links-card > div:first-child {
+                font-size: 1rem !important;
+            }
+            .link-list-item {
+                font-size: 0.9rem;
+            }
+            .link-list-item svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="main-content">
+        <h1>Welcome to llymemg00 Hub</h1>
+        <h3>This is my main page, here you can see my projects and links.</h3>
+        <div class="linkrow">
+            <div class="card links-card" style="align-items:flex-start;">
+                <div style="font-weight:bold; font-size:1.16rem; margin-bottom:10px;">My links</div>
+                <div class="link-list">
+                    <div class="link-list-item">
+                        <svg fill="#fff" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.486 2 12.021c0 4.426 2.865 8.183 6.839 9.504.5.092.682-.217.682-.482 0-.238-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.455-1.162-1.11-1.472-1.11-1.472-.908-.62.069-.608.069-.608 1.004.07 1.533 1.032 1.533 1.032.892 1.529 2.341 1.088 2.91.833.091-.647.349-1.088.636-1.34-2.221-.253-4.555-1.114-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.104-.254-.446-1.269.099-2.648 0 0 .84-.269 2.75 1.025A9.54 9.54 0 0 1 12 6.844a9.47 9.47 0 0 1 2.504.336c1.909-1.294 2.748-1.025 2.748-1.025.546 1.379.204 2.394.1 2.648.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.565 4.943.36.309.679.92.679 1.855 0 1.338-.013 2.422-.013 2.752 0 .268.18.577.688.48C19.138 20.2 22 16.444 22 12.021 22 6.486 17.523 2 12 2z"/></svg>
+                        <a style="color:#fff; text-decoration:none;" href="https://github.com/yourusername" target="_blank">Github</a>
+                    </div>
+                    <div class="link-list-item">
+                        <svg fill="#5865F2" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        <a style="color:#5865F2; text-decoration:none;" href="https://discordapp.com/users/llymemg00" target="_blank">Discord</a>
+                    </div>
+                    <div class="link-list-item">
+                        <svg fill="#0088cc" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        <a style="color:#0088cc; text-decoration:none;" href="https://t.me/llymemg00" target="_blank">Telegram</a>
+                    </div>
+                    <div class="link-list-item">
+                        <svg fill="#1DB954" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.66 0-.362.24-.66.54-.779 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+                        <a style="color:#1DB954; text-decoration:none;" href="https://open.spotify.com/user/31qrbyxsiawhh36e76utmioj4wq4" target="_blank">Spotify</a>
+                    </div>
+                    <div class="link-list-item">
+                        <svg viewBox="<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <!-- Background circle -->
+                            <circle cx="12" cy="12" r="10" fill="#FF66AA"/>
+                            
+                            <!-- White "osu!" text styled simply -->
+                            <text x="12" y="14" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">osu!</text>
+                          </svg>>osu!</text></svg>
+                        <a style="color:#ff66aa; text-decoration:none;" href="https://osu.ppy.sh/users/ВАШ_ID_ИЛИ_НИК" target="_blank">osu!</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card profile-card">
+                <img class="profile-avatar" src="https://i.ibb.co/Zpjp4CYg/9da3cc171d93e5f7.jpg" alt="avatar"/>
+                <div class="profile-info">
+                    <div class="profile-name">llymemg00</div>
+                    <div class="profile-bio">No bio available.</div>
+                    <a class="green-btn" href="" target="_blank">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+var isMobile = window.innerWidth <= 768;
+particlesJS('particles-js', {
+  "particles": {
+    "number": {"value": isMobile ? 30 : 60,"density":{"enable":true,"value_area":900}},
+    "color": {"value": "#fff"},
+    "shape": {"type": "circle"},
+    "opacity": {"value": 0.32,"random":true},
+    "size": {"value": isMobile ? 3 : 3.5,"random":true},
+    "line_linked": {"enable":true,"distance": isMobile ? 120 : 140,"color": "#fff","opacity": 0.25,"width": 1},
+    "move": {"enable":true,"speed": isMobile ? 1.5 : 1.9,"direction":"none","random":false,"straight":false,"out_mode":"out"}
+  },
+  "interactivity": {
+    "detect_on": "canvas",
+    "events": {
+      "onhover": {"enable": !isMobile, "mode": "grab"},
+      "onclick": {"enable": false},
+      "resize": true
+    },
+    "modes": {
+      "grab": {"distance":200,"line_linked":{"opacity":0.46}},
+      "repulse": {"distance": 110, "duration": 0.7}
+    }
+  },
+  "retina_detect": true
+});
+    </script>
+</body>
+</html>
