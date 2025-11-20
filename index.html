@@ -322,6 +322,45 @@
             align-items: center;
             vertical-align: middle;
         }
+        @keyframes floatText {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(3px, -4px) rotate(0.5deg);
+            }
+            50% {
+                transform: translate(-2px, 3px) rotate(-0.3deg);
+            }
+            75% {
+                transform: translate(-3px, -2px) rotate(0.4deg);
+            }
+        }
+        h1.floaty, h3.floaty {
+            animation: floatText 8s ease-in-out infinite;
+        }
+        h3.floaty {
+            animation-duration: 10s;
+        }
+        .floating-text {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 4.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #fff;
+            margin: 5vh 0 10px 0;
+            animation: floatText 8s ease-in-out infinite;
+            text-align: center;
+        }
+        .floating-desc {
+            font-family: 'Montserrat', Arial, sans-serif;
+            font-size: 2.1rem;
+            font-weight: 400;
+            color: #bdbdbd;
+            margin-bottom: 48px;
+            animation: floatText 10s ease-in-out infinite;
+            text-align: center;
+        }
         @media (max-width: 768px) {
             html, body {
                 overflow-y: auto;
@@ -496,8 +535,8 @@
 <body>
     <div id="particles-js"></div>
     <div class="main-content">
-        <h1>Welcome to llymemg00 Hub</h1>
-        <h3>This is my main page, here you can see my projects and links.</h3>
+        <h1 class="floaty">Welcome to llymemg00 Hub</h1>
+        <h3 class="floaty">This is my main page, here you can see my projects and links.</h3>
         <div class="linkrow">
             <div class="card links-card" style="align-items:flex-start;">
                 <div style="font-weight:bold; font-size:1.16rem; margin-bottom:10px;">My links</div>
