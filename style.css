@@ -53,7 +53,6 @@ body {
     animation: textureMove 30s linear infinite;
 }
 
-/* GTA V style flash layer */
 .gta-flash-layer {
     position: fixed;
     inset: 0;
@@ -128,7 +127,7 @@ body {
     padding: 40px 20px;
 }
 
-/* Settings Button (Top) */
+
 .settings-button {
     position: absolute;
     top: 20px;
@@ -159,7 +158,7 @@ body {
     margin-top: 60px;
 }
 
-/* Cards */
+
 .card {
     background: rgba(26, 26, 26, 0.82);
     border-radius: 20px;
@@ -175,7 +174,7 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Profile Card */
+
 .profile-card {
     grid-row: span 2;
 }
@@ -281,7 +280,7 @@ body {
     color: #8f8f8f;
 }
 
-/* Discord-like Spotify activity */
+
 .spotify-activity {
     margin-top: 18px;
     padding: 16px 18px;
@@ -350,7 +349,7 @@ body {
     font-variant-numeric: tabular-nums;
 }
 
-/* Discord-like Game activity */
+
 .game-activity {
     margin-top: 18px;
     padding: 16px 18px;
@@ -477,7 +476,7 @@ body {
     letter-spacing: 1px;
 }
 
-/* Connections Card */
+
 .connections-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -508,7 +507,7 @@ body {
     transform: translateY(-3px);
 }
 
-/* Action Button */
+
 .action-button {
     position: fixed;
     bottom: 30px;
@@ -533,7 +532,7 @@ body {
     transform: translateX(-50%) translateY(-5px);
 }
 
-/* Modal Window */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -579,7 +578,7 @@ body {
     text-align: center;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
@@ -603,3 +602,4 @@ body {
         right: 10px;
     }
 }
+
