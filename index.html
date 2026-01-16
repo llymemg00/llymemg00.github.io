@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bio Page</title>
+    <title>llymemg00 bio</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,16 +11,8 @@
     <div class="gta-flash-layer"></div>
     
     <div class="container">
-        
-        <div class="settings-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3m15.364-6.364l-4.243 4.243m-4.242 0L5.636 5.636m12.728 12.728l-4.243-4.243m-4.242 0L5.636 18.364"></path>
-            </svg>
-        </div>
-
         <div class="main-content">
-            
+            <!-- Profile Card -->
             <div class="card profile-card">
                 <div class="profile-header">
                     <div class="profile-avatar">
@@ -43,9 +35,9 @@
                 </div>
             </div>
 
-           
+            <!-- Right Column -->
             <div class="right-column">
-               
+                <!-- Local Time Card -->
                 <div class="card time-card">
                     <div class="card-header">LOCAL TIME</div>
                     <div class="card-content">
@@ -54,7 +46,7 @@
                     </div>
                 </div>
 
-                
+                <!-- Weather Card -->
                 <div class="card weather-card">
                     <div class="card-header">WEATHER</div>
                     <div class="card-content">
@@ -64,14 +56,16 @@
                     </div>
                 </div>
 
-               
+                <!-- Connections Card -->
                 <div class="card connections-card">
                     <div class="card-header">CONNECTIONS</div>
                     <div class="connections-grid">
                         <a href="#" class="connection-icon" id="spotify-icon">
+                            <!-- Spotify (оригинальная форма, обесцвечивается через CSS filter) -->
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                               
+                                <!-- круг чуть больше, ближе к краям -->
                                 <circle cx="12" cy="12" r="11" fill="#1DB954"></circle>
+                                <!-- 3 фирменные дуги, толще и с большим расстоянием между ними -->
                                 <path
                                     d="M7 8.6c2.9-.8 6.9-.6 9.6.8"
                                     stroke="#ffffff"
@@ -120,7 +114,8 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- Action Button -->
         <div class="action-button">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -136,7 +131,17 @@
         </div>
     </div>
 
+    <!-- Bottom Section -->
+    <div class="bottom-section" id="bottom-section">
+        <div class="container">
+            <div class="bottom-content">
+                <!-- Здесь вы можете писать что захотите -->
+                <h2 class="bottom-title">Добро пожаловать!</h2>
+                <p class="bottom-text">Это секция внизу страницы. Вы можете редактировать этот текст как вам угодно.</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-

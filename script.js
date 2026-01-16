@@ -14,6 +14,7 @@ function updateTime() {
     }
 }
 
+// --- Weather: Odesa region (using open-meteo.com, no API key required) ---
 
 const ODESA_COORDS = {
     latitude: 46.48,
@@ -55,32 +56,111 @@ async function updateWeather() {
     }
 }
 
+// Initialize time & weather on load
 updateTime();
 updateWeather();
 
-
+// Update time every minute, weather каждые 10 минут
 setInterval(updateTime, 60000);
 setInterval(updateWeather, 10 * 60 * 1000);
 
-// Settings button click handler
-document.querySelector('.settings-button')?.addEventListener('click', function() {
-    alert('Настройки (Settings functionality can be added here)');
-});
-
-
-document.querySelector('.action-button')?.addEventListener('click', function() {
-   
-    if (navigator.share) {
-        navigator.share({
-            title: 'Bio Page',
-            url: window.location.href
-        }).catch(() => {});
-    } else if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(window.location.href).catch(() => {});
+// Action button click handler - плавная прокрутка вниз
+(function() {
+    let bottomSectionUnlocked = false;
+    let preventScrollHandler = null;
+    
+    function initActionButton() {
+        const actionButton = document.querySelector('.action-button');
+        const bottomSection = document.getElementById('bottom-section');
+        const body = document.body;
+        const html = document.documentElement;
+        
+        if (!actionButton) {
+            console.error('Кнопка не найдена!');
+            return;
+        }
+        
+        if (!bottomSection) {
+            console.error('Нижняя секция не найдена!');
+            return;
+        }
+        
+        console.log('Инициализация кнопки...');
+        
+        // Убеждаемся, что кнопка кликабельна
+        actionButton.style.pointerEvents = 'auto';
+        actionButton.style.zIndex = '1000';
+        actionButton.style.cursor = 'pointer';
+        actionButton.style.position = 'fixed';
+        
+        // Блокируем прокрутку вниз до клика
+        preventScrollHandler = function(e) {
+            if (bottomSectionUnlocked) return;
+            
+            const scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop;
+            const scrollHeight = html.scrollHeight || body.scrollHeight;
+            const clientHeight = html.clientHeight || window.innerHeight;
+            const isScrollingDown = e.deltaY > 0;
+            
+            // Блокируем прокрутку вниз, если достигли конца видимой области
+            if (isScrollingDown && scrollTop + clientHeight >= scrollHeight - 10) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        };
+        
+        window.addEventListener('wheel', preventScrollHandler, { passive: false });
+        
+        // Обработчик клика на кнопку
+        actionButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Кнопка нажата!');
+            
+            // Разблокируем нижнюю секцию
+            bottomSectionUnlocked = true;
+            
+            // Удаляем блокировку прокрутки
+            if (preventScrollHandler) {
+                window.removeEventListener('wheel', preventScrollHandler);
+            }
+            
+            // Показываем нижнюю секцию
+            bottomSection.style.display = 'block';
+            
+            // Небольшая задержка для применения display: block
+            setTimeout(function() {
+                // Плавная прокрутка вниз
+                window.scrollTo({
+                    top: document.documentElement.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        });
+        
+        // Тест кликабельности
+        actionButton.addEventListener('mousedown', function() {
+            console.log('Кнопка получила событие mousedown');
+        });
+        
+        actionButton.addEventListener('mouseenter', function() {
+            console.log('Курсор над кнопкой');
+        });
+        
+        console.log('Кнопка инициализирована');
     }
-});
+    
+    // Инициализируем обработчик после загрузки DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initActionButton);
+    } else {
+        // DOM уже загружен - используем небольшую задержку
+        setTimeout(initActionButton, 100);
+    }
+})();
 
-
+// Modal window functionality
 const modalOverlay = document.getElementById('modal-overlay');
 const spotifyIcon = document.getElementById('spotify-icon');
 
@@ -96,7 +176,7 @@ function hideModal() {
     }
 }
 
-
+// Spotify icon click handler
 if (spotifyIcon) {
     spotifyIcon.addEventListener('click', function(e) {
         e.preventDefault();
@@ -104,7 +184,7 @@ if (spotifyIcon) {
     });
 }
 
-
+// Close modal on overlay click
 if (modalOverlay) {
     modalOverlay.addEventListener('click', function(e) {
         if (e.target === modalOverlay) {
@@ -113,7 +193,7 @@ if (modalOverlay) {
     });
 }
 
-
+// Connection icons hover effects
 document.querySelectorAll('.connection-icon').forEach(icon => {
     if (icon.id !== 'spotify-icon') {
         icon.addEventListener('click', function() {
@@ -209,12 +289,12 @@ function renderSpotifyActivity(spotify, timestamps) {
 
 function discordAssetUrl(applicationId, image) {
     if (!applicationId || !image) return null;
-    
+    // mp:external/... → media proxy
     if (image.startsWith('mp:')) {
         const path = image.slice(3); // remove "mp:"
         return `https://media.discordapp.net/${path}`;
     }
-    
+    // Regular app-assets (usually hashes or asset names)
     return `https://cdn.discordapp.com/app-assets/${applicationId}/${image}.png`;
 }
 
@@ -243,7 +323,7 @@ function renderGameActivity(activity) {
         </div>
     `;
 
-
+    // If we don't have images, keep layout but avoid broken icon
     const cover = activityEl.querySelector('.game-cover');
     if (cover && !large) {
         cover.style.display = 'none';
@@ -318,7 +398,8 @@ async function updateDiscordPresence() {
             if (data.listening_to_spotify && data.spotify) {
                 renderSpotifyActivity(data.spotify, data.spotify?.timestamps || data.timestamps);
 
-              
+                // Предыдущая активность при Spotify — полноценная игровая карточка:
+                // сначала пробуем текущую игру, если есть, иначе используем сохранённую последнюю
                 const gamePrev = currentGame || lastGameActivity;
                 if (gamePrev) {
                     activityEl.insertAdjacentHTML(
@@ -336,7 +417,7 @@ async function updateDiscordPresence() {
                 if (game) {
                     renderGameActivity(game);
 
-                    
+                    // Предыдущая активность: custom status, если есть
                     if (custom && custom !== game) {
                         const prevText = `Предыдущая активность: ${escapeHtml(custom.state)}`;
                         activityEl.insertAdjacentHTML(
@@ -346,7 +427,8 @@ async function updateDiscordPresence() {
                     }
                     return;
                 } else if (!game && lastGameActivity) {
-                  
+                    // Игра уже закрыта, но показываем последнюю игру как основную активность
+                    // (без таймера, чтобы не считать время после выхода из игры)
                     const cached = { ...lastGameActivity, timestamps: null };
                     renderGameActivity(cached);
                     return;
@@ -381,7 +463,7 @@ async function updateDiscordPresence() {
             activityEl.textContent = text;
         }
     } catch (e) {
-        
+        // If request fails, assume offline and keep UI consistent
         setPresenceDot('offline');
         clearSpotifyTick();
         clearActivityTick();
@@ -395,7 +477,7 @@ async function updateDiscordPresence() {
 updateDiscordPresence();
 setInterval(updateDiscordPresence, 10000);
 
-
+// Randomize GTA flash timing
 const gtaFlashLayer = document.querySelector('.gta-flash-layer');
 
 function randomizeGtaFlashTiming() {
@@ -410,4 +492,3 @@ if (gtaFlashLayer) {
     randomizeGtaFlashTiming();
     gtaFlashLayer.addEventListener('animationiteration', randomizeGtaFlashTiming);
 }
-

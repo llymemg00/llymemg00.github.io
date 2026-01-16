@@ -10,6 +10,7 @@ body {
     color: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
 }
 
@@ -53,6 +54,7 @@ body {
     animation: textureMove 30s linear infinite;
 }
 
+/* Фон. */
 .gta-flash-layer {
     position: fixed;
     inset: 0;
@@ -111,11 +113,18 @@ body {
 }
 
 @keyframes textureMove {
+    /* Фон. "дыхание" */
     0% {
-        transform: translateY(0);
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.03);
     }
     100% {
-        transform: translateY(100px);
+        opacity: 0.2;
+        transform: scale(1);
     }
 }
 
@@ -128,29 +137,6 @@ body {
 }
 
 
-.settings-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    background: rgba(20, 20, 20, 0.9);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #ffffff;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.settings-button:hover {
-    background: rgba(32, 32, 32, 0.95);
-    transform: rotate(90deg);
-}
-
 .main-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -158,7 +144,7 @@ body {
     margin-top: 60px;
 }
 
-
+/* Карточки. */
 .card {
     background: rgba(26, 26, 26, 0.82);
     border-radius: 20px;
@@ -174,7 +160,7 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-
+/* Карточки v2 */
 .profile-card {
     grid-row: span 2;
 }
@@ -280,7 +266,7 @@ body {
     color: #8f8f8f;
 }
 
-
+/* Spotify*/
 .spotify-activity {
     margin-top: 18px;
     padding: 16px 18px;
@@ -349,7 +335,7 @@ body {
     font-variant-numeric: tabular-nums;
 }
 
-
+/* Активности. */
 .game-activity {
     margin-top: 18px;
     padding: 16px 18px;
@@ -442,7 +428,7 @@ body {
     flex-direction: column;
 }
 
-/* Time Card */
+/* Время. */
 .time-display {
     font-size: 48px;
     font-weight: 700;
@@ -455,7 +441,7 @@ body {
     color: #b0b0b0;
 }
 
-/* Weather Card */
+/* Погода. */
 .temperature {
     font-size: 48px;
     font-weight: 700;
@@ -476,7 +462,7 @@ body {
     letter-spacing: 1px;
 }
 
-
+/* Connections Card */
 .connections-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -507,7 +493,7 @@ body {
     transform: translateY(-3px);
 }
 
-
+/* Action Button */
 .action-button {
     position: fixed;
     bottom: 30px;
@@ -525,6 +511,8 @@ body {
     color: #ffffff;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 1000;
+    pointer-events: auto;
 }
 
 .action-button:hover {
@@ -532,7 +520,7 @@ body {
     transform: translateX(-50%) translateY(-5px);
 }
 
-
+/* Modal Window */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -578,7 +566,44 @@ body {
     text-align: center;
 }
 
+/* Bottom Section */
+.bottom-section {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding: 80px 20px;
+    margin-top: 100px;
+    display: none; /* Скрыта до клика на кнопку */
+}
 
+.bottom-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(26, 26, 26, 0.82);
+    border-radius: 20px;
+    padding: 60px 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.bottom-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.bottom-text {
+    font-size: 18px;
+    color: #b0b0b0;
+    line-height: 1.8;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .main-content {
         grid-template-columns: 1fr;
@@ -597,9 +622,15 @@ body {
         font-size: 36px;
     }
     
-    .settings-button {
-        top: 10px;
-        right: 10px;
+    .bottom-title {
+        font-size: 36px;
+    }
+    
+    .bottom-text {
+        font-size: 16px;
+    }
+    
+    .bottom-content {
+        padding: 40px 24px;
     }
 }
-
