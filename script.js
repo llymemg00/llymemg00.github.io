@@ -64,16 +64,16 @@ updateWeather();
 setInterval(updateTime, 60000);
 setInterval(updateWeather, 10 * 60 * 1000);
 
-// Action button click handler - плавная прокрутка вниз
+// Action button click handler - плавная прокрутка вниз/вверх
 (function() {
     let bottomSectionUnlocked = false;
-    let preventScrollHandler = null;
     
     function initActionButton() {
         const actionButton = document.querySelector('.action-button');
         const bottomSection = document.getElementById('bottom-section');
         const body = document.body;
         const html = document.documentElement;
+        const svg = actionButton?.querySelector('svg');
         
         if (!actionButton) {
             console.error('Кнопка не найдена!');
@@ -85,68 +85,95 @@ setInterval(updateWeather, 10 * 60 * 1000);
             return;
         }
         
-        console.log('Инициализация кнопки...');
-        
         // Убеждаемся, что кнопка кликабельна
         actionButton.style.pointerEvents = 'auto';
-        actionButton.style.zIndex = '1000';
+        actionButton.style.zIndex = '10000';
         actionButton.style.cursor = 'pointer';
         actionButton.style.position = 'fixed';
         
-        // Блокируем прокрутку вниз до клика
-        preventScrollHandler = function(e) {
-            if (bottomSectionUnlocked) return;
-            
+        // Функция для определения, находится ли пользователь в нижней секции
+        function isInBottomSection() {
             const scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop;
             const scrollHeight = html.scrollHeight || body.scrollHeight;
             const clientHeight = html.clientHeight || window.innerHeight;
-            const isScrollingDown = e.deltaY > 0;
             
-            // Блокируем прокрутку вниз, если достигли конца видимой области
-            if (isScrollingDown && scrollTop + clientHeight >= scrollHeight - 10) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
+            // Пользователь в нижней секции, если прокрутка близка к концу
+            return scrollTop + clientHeight >= scrollHeight - 200;
+        }
+        
+        // Обновление иконки кнопки в зависимости от позиции
+        function updateButtonIcon() {
+            if (!svg) return;
+            
+            const inBottomSection = isInBottomSection();
+            
+            if (inBottomSection && bottomSectionUnlocked) {
+                // Пользователь внизу - показываем иконку вверх
+                svg.style.transform = 'rotate(180deg)';
+                actionButton.title = 'Наверх';
+            } else {
+                // Пользователь вверху - показываем иконку вниз
+                svg.style.transform = 'rotate(0deg)';
+                actionButton.title = 'Вниз';
             }
-        };
+        }
         
-        window.addEventListener('wheel', preventScrollHandler, { passive: false });
+        // Отслеживаем прокрутку для обновления иконки
+        let scrollTimeout = null;
+        window.addEventListener('scroll', function() {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            scrollTimeout = setTimeout(updateButtonIcon, 50);
+        }, { passive: true });
         
-        // Обработчик клика на кнопку
-        actionButton.addEventListener('click', function(e) {
+        // Функция обработки клика на кнопку
+        function handleButtonClick(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Кнопка нажата!');
             
-            // Разблокируем нижнюю секцию
-            bottomSectionUnlocked = true;
+            const inBottomSection = isInBottomSection();
             
-            // Удаляем блокировку прокрутки
-            if (preventScrollHandler) {
-                window.removeEventListener('wheel', preventScrollHandler);
-            }
-            
-            // Показываем нижнюю секцию
-            bottomSection.style.display = 'block';
-            
-            // Небольшая задержка для применения display: block
-            setTimeout(function() {
-                // Плавная прокрутка вниз
+            if (inBottomSection && bottomSectionUnlocked) {
+                // Пользователь внизу - прокручиваем вверх
+                console.log('Прокрутка вверх');
                 window.scrollTo({
-                    top: document.documentElement.scrollHeight,
+                    top: 0,
                     behavior: 'smooth'
                 });
-            }, 100);
-        });
+            } else {
+                // Пользователь вверху - прокручиваем вниз
+                console.log('Прокрутка вниз');
+                // Разблокируем нижнюю секцию
+                bottomSectionUnlocked = true;
+                
+                // Показываем нижнюю секцию
+                bottomSection.style.display = 'block';
+                
+                // Небольшая задержка для применения display: block
+                setTimeout(function() {
+                    // Плавная прокрутка вниз
+                    window.scrollTo({
+                        top: document.documentElement.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                    updateButtonIcon();
+                }, 100);
+            }
+        }
         
-        // Тест кликабельности
-        actionButton.addEventListener('mousedown', function() {
-            console.log('Кнопка получила событие mousedown');
-        });
+        // Обработчик клика
+        actionButton.addEventListener('click', handleButtonClick);
         
-        actionButton.addEventListener('mouseenter', function() {
-            console.log('Курсор над кнопкой');
-        });
+        // Обработчик для touch устройств
+        actionButton.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            handleButtonClick(e);
+        }, { passive: false });
+        
+        // Инициализируем иконку
+        updateButtonIcon();
         
         console.log('Кнопка инициализирована');
     }

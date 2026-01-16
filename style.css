@@ -511,13 +511,20 @@ body {
     color: #ffffff;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 1000;
-    pointer-events: auto;
+    z-index: 10000 !important;
+    pointer-events: auto !important;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
 }
 
 .action-button:hover {
     background: rgba(32, 32, 32, 0.95);
     transform: translateX(-50%) translateY(-5px);
+}
+
+.action-button svg {
+    transition: transform 0.3s ease;
 }
 
 /* Modal Window */
