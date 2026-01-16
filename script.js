@@ -244,13 +244,7 @@ function hideModal() {
     }
 }
 
-// Spotify icon click handler
-if (spotifyIcon) {
-    spotifyIcon.addEventListener('click', function(e) {
-        e.preventDefault();
-        showModal();
-    });
-}
+// Spotify icon click handler - removed, now opens Spotify link directly
 
 // Close modal on overlay click
 if (modalOverlay) {
