@@ -64,126 +64,157 @@ updateWeather();
 setInterval(updateTime, 60000);
 setInterval(updateWeather, 10 * 60 * 1000);
 
-// Action button click handler - плавная прокрутка вниз/вверх
+// Отключение прокрутки колесом мыши
 (function() {
-    let bottomSectionUnlocked = false;
-    
-    function initActionButton() {
-        const actionButton = document.querySelector('.action-button');
-        const bottomSection = document.getElementById('bottom-section');
-        const body = document.body;
-        const html = document.documentElement;
-        const svg = actionButton?.querySelector('svg');
-        
-        if (!actionButton) {
-            console.error('Кнопка не найдена!');
-            return;
-        }
-        
-        if (!bottomSection) {
-            console.error('Нижняя секция не найдена!');
-            return;
-        }
-        
-        // Убеждаемся, что кнопка кликабельна
-        actionButton.style.pointerEvents = 'auto';
-        actionButton.style.zIndex = '10000';
-        actionButton.style.cursor = 'pointer';
-        actionButton.style.position = 'fixed';
-        
-        // Функция для определения, находится ли пользователь в нижней секции
-        function isInBottomSection() {
-            const scrollTop = window.pageYOffset || html.scrollTop || body.scrollTop;
-            const scrollHeight = html.scrollHeight || body.scrollHeight;
-            const clientHeight = html.clientHeight || window.innerHeight;
-            
-            // Пользователь в нижней секции, если прокрутка близка к концу
-            return scrollTop + clientHeight >= scrollHeight - 200;
-        }
-        
-        // Обновление иконки кнопки в зависимости от позиции
-        function updateButtonIcon() {
-            if (!svg) return;
-            
-            const inBottomSection = isInBottomSection();
-            
-            if (inBottomSection && bottomSectionUnlocked) {
-                // Пользователь внизу - показываем иконку вверх
-                svg.style.transform = 'rotate(180deg)';
-                actionButton.title = 'Наверх';
-            } else {
-                // Пользователь вверху - показываем иконку вниз
-                svg.style.transform = 'rotate(0deg)';
-                actionButton.title = 'Вниз';
-            }
-        }
-        
-        // Отслеживаем прокрутку для обновления иконки
-        let scrollTimeout = null;
-        window.addEventListener('scroll', function() {
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout);
-            }
-            scrollTimeout = setTimeout(updateButtonIcon, 50);
-        }, { passive: true });
-        
-        // Функция обработки клика на кнопку
-        function handleButtonClick(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Кнопка нажата!');
-            
-            const inBottomSection = isInBottomSection();
-            
-            if (inBottomSection && bottomSectionUnlocked) {
-                // Пользователь внизу - прокручиваем вверх
-                console.log('Прокрутка вверх');
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            } else {
-                // Пользователь вверху - прокручиваем вниз
-                console.log('Прокрутка вниз');
-                // Разблокируем нижнюю секцию
-                bottomSectionUnlocked = true;
-                
-                // Показываем нижнюю секцию
-                bottomSection.style.display = 'block';
-                
-                // Небольшая задержка для применения display: block
-                setTimeout(function() {
-                    // Плавная прокрутка вниз
-                    window.scrollTo({
-                        top: document.documentElement.scrollHeight,
-                        behavior: 'smooth'
-                    });
-                    updateButtonIcon();
-                }, 100);
-            }
-        }
-        
-        // Обработчик клика
-        actionButton.addEventListener('click', handleButtonClick);
-        
-        // Обработчик для touch устройств
-        actionButton.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            handleButtonClick(e);
-        }, { passive: false });
-        
-        // Инициализируем иконку
-        updateButtonIcon();
-        
-        console.log('Кнопка инициализирована');
+    function preventWheelScroll(e) {
+        e.preventDefault();
     }
     
-    // Инициализируем обработчик после загрузки DOM
+    // Отключаем прокрутку на всем документе
+    document.addEventListener('wheel', preventWheelScroll, { passive: false });
+    document.addEventListener('touchmove', preventWheelScroll, { passive: false });
+    
+    // Также отключаем прокрутку через клавиатуру (стрелки, Page Up/Down)
+    document.addEventListener('keydown', function(e) {
+        if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
+            e.preventDefault();
+        }
+    });
+})();
+
+// Action button click handler - переключение между верхней и нижней секциями
+(function() {
+    let currentSection = 'top'; // 'top' или 'bottom'
+    
+    function initActionButtons() {
+        const topActionButton = document.querySelector('.action-button:not(.action-button-bottom)');
+        const bottomActionButton = document.querySelector('.action-button-bottom');
+        const topSection = document.getElementById('top-section');
+        const bottomSection = document.getElementById('bottom-section');
+        
+        if (!topActionButton) {
+            console.error('Верхняя кнопка не найдена!');
+            return;
+        }
+        
+        if (!topSection || !bottomSection) {
+            console.error('Секции не найдены!');
+            return;
+        }
+        
+        // Настройка кнопок
+        function setupButton(button, svg) {
+            if (button && svg) {
+                button.style.pointerEvents = 'auto';
+                button.style.zIndex = '1000';
+                button.style.cursor = 'pointer';
+                button.style.position = 'fixed';
+            }
+        }
+        
+        const topSvg = topActionButton?.querySelector('svg');
+        const bottomSvg = bottomActionButton?.querySelector('svg');
+        
+        setupButton(topActionButton, topSvg);
+        if (bottomActionButton && bottomSvg) {
+            setupButton(bottomActionButton, bottomSvg);
+        }
+        
+        // Иконка для верхней кнопки (вниз)
+        if (topSvg) {
+            topActionButton.title = 'Вниз';
+        }
+        
+        // Иконка для нижней кнопки (вверх)
+        if (bottomSvg) {
+            bottomActionButton.title = 'Наверх';
+        }
+        
+        // Функция переключения на нижнюю секцию (из верхней кнопки)
+        function showBottomSection() {
+            currentSection = 'bottom';
+            topSection.style.display = 'none';
+            bottomSection.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            setTimeout(() => {
+                bottomSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 10);
+        }
+        
+        // Функция переключения на верхнюю секцию (из нижней кнопки)
+        function showTopSection() {
+            currentSection = 'top';
+            bottomSection.style.display = 'none';
+            topSection.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            setTimeout(() => {
+                topSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 10);
+        }
+        
+        // Функция для запуска анимации кнопки
+        function animateButton(svg) {
+            if (!svg) return;
+            svg.classList.remove('animate-rotate');
+            // Небольшая задержка для перезапуска анимации
+            setTimeout(() => {
+                svg.classList.add('animate-rotate');
+            }, 10);
+        }
+        
+        // Обработчик клика для верхней кнопки (вниз)
+        topActionButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentSection === 'top') {
+                animateButton(topSvg);
+                showBottomSection();
+            }
+        });
+        
+        // Обработчик клика для нижней кнопки (вверх)
+        if (bottomActionButton) {
+            bottomActionButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (currentSection === 'bottom') {
+                    animateButton(bottomSvg);
+                    showTopSection();
+                }
+            });
+        }
+        
+        // Обработчики для touch устройств
+        topActionButton.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (currentSection === 'top') {
+                animateButton(topSvg);
+                showBottomSection();
+            }
+        }, { passive: false });
+        
+        if (bottomActionButton) {
+            bottomActionButton.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                if (currentSection === 'bottom') {
+                    animateButton(bottomSvg);
+                    showTopSection();
+                }
+            }, { passive: false });
+        }
+        
+        // Изначально показываем только верхнюю секцию
+        topSection.style.display = 'block';
+        bottomSection.style.display = 'none';
+        
+        console.log('Кнопки инициализированы');
+    }
+    
+    // Инициализируем обработчики после загрузки DOM
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initActionButton);
+        document.addEventListener('DOMContentLoaded', initActionButtons);
     } else {
-        // DOM уже загружен - используем небольшую задержку
-        setTimeout(initActionButton, 100);
+        setTimeout(initActionButtons, 100);
     }
 })();
 
