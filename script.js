@@ -64,7 +64,7 @@ updateWeather();
 setInterval(updateTime, 60000);
 setInterval(updateWeather, 10 * 60 * 1000);
 
-// Отключение прокрутки колесом мыши (только на десктопе)
+// Отключение прокрутки колесом мыши (только на десктопе, на мобильных разрешена)
 (function() {
     // Проверяем, является ли устройство мобильным
     function isMobileDevice() {
@@ -81,10 +81,10 @@ setInterval(updateWeather, 10 * 60 * 1000);
         e.preventDefault();
     }
     
-    // Отключаем прокрутку только на десктопе
+    // Отключаем прокрутку колесом мыши только на десктопе
     document.addEventListener('wheel', preventWheelScroll, { passive: false });
     
-    // Также отключаем прокрутку через клавиатуру (стрелки, Page Up/Down)
+    // Также отключаем прокрутку через клавиатуру (стрелки, Page Up/Down) только на десктопе
     document.addEventListener('keydown', function(e) {
         if ([32, 33, 34, 35, 36, 37, 38, 39, 40].includes(e.keyCode)) {
             e.preventDefault();
