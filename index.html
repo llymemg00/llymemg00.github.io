@@ -130,9 +130,55 @@
     <div class="bottom-section" id="bottom-section">
         <div class="container">
             <div class="bottom-content">
-                <!-- Здесь вы можете писать что захотите -->
-                <h2 class="bottom-title">Добро пожаловать!</h2>
-                <p class="bottom-text">Идите нахуй!</p>
+                <h2 class="bottom-title" id="minesweeper-title">Сапёр</h2>
+                <div class="minesweeper-levels" id="minesweeper-levels" aria-hidden="true">
+                    <button type="button" class="minesweeper-level" data-level="medium" aria-label="Средний уровень">
+                        <span class="minesweeper-level-mark"></span>
+                    </button>
+                    <button type="button" class="minesweeper-level" data-level="hard" aria-label="Сложный уровень">
+                        <span class="minesweeper-level-mark"></span>
+                        <span class="minesweeper-level-mark"></span>
+                    </button>
+                </div>
+                <div class="minesweeper" id="minesweeper">
+                    <div class="minesweeper-toolbar">
+                        <div class="minesweeper-stat">
+                            <span class="minesweeper-stat-label">Мины</span>
+                            <span class="minesweeper-stat-value" id="mine-count">25</span>
+                        </div>
+                        <button type="button" class="minesweeper-face" id="minesweeper-reset" title="Новая игра" data-state="idle">
+                            <svg class="minesweeper-face-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <g class="minesweeper-face-icon-idle">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <polyline points="1 20 1 14 7 14"></polyline>
+                                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"></path>
+                                    <path d="M3.51 15A9 9 0 0 0 18.36 18.36L23 14"></path>
+                                </g>
+                                <g class="minesweeper-face-icon-won">
+                                    <circle cx="12" cy="12" r="9"></circle>
+                                    <polyline points="8 12 11 15 16 9"></polyline>
+                                </g>
+                                <g class="minesweeper-face-icon-lost">
+                                    <circle cx="12" cy="12" r="9"></circle>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                </g>
+                            </svg>
+                        </button>
+                        <div class="minesweeper-stat">
+                            <span class="minesweeper-stat-label">Время</span>
+                            <span class="minesweeper-stat-value" id="mine-timer">0</span>
+                        </div>
+                    </div>
+                    <div class="minesweeper-controls">
+                        <button type="button" class="minesweeper-flag-toggle" id="minesweeper-flag-mode" aria-pressed="false">
+                            Флаг: выкл
+                        </button>
+                        <span class="minesweeper-hint">ПКМ — флаг · на телефоне включите режим «Флаг»</span>
+                    </div>
+                    <div class="minesweeper-board" id="minesweeper-board" role="grid" aria-label="Поле сапёра"></div>
+                    <p class="minesweeper-status" id="minesweeper-status" aria-live="polite"></p>
+                </div>
             </div>
         </div>
         <!-- Action Button (Bottom) -->
